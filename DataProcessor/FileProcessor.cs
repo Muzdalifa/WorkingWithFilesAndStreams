@@ -63,6 +63,42 @@ namespace DataProcessor
             Console.WriteLine($"Moving {InputFilePath} to {inProgressFilePath}");
             File.Move(InputFilePath, inProgressFilePath);
 
+            //Getting the File Extension from  a File Name
+            //Determin type of fyle
+            string extension = Path.GetExtension(InputFilePath);
+
+            switch (extension)
+            {
+                case ".txt":
+                    ProcessTextFile(inProgressFilePath);
+                    break;
+                default:
+                    Console.WriteLine($"{extension} is an unsupported file type. ");
+                    break;
+            }
+
+            //Move file after processing is complete
+            string completeDirectoryPath = Path.Combine(rootDirectoryPath, CompleteDirectoryName);
+            Directory.CreateDirectory(completeDirectoryPath);
+            Console.WriteLine($"Moving {inProgressFilePath} to {completeDirectoryPath}");
+            //File.Move(inProgressFilePath, Path.Combine(completeDirectoryPath, inputFileName)); we are not doing this here, we will append the file 
+
+            //Append GUID to the file name ie if we process same name twice, we waill have unique file name output to the completed directory
+            string completedFileName =
+                $"{Path.GetFileNameWithoutExtension(InputFilePath)} - {Guid.NewGuid()}{extension}";
+
+            //technique: to change file extension we can use
+            completedFileName = Path.ChangeExtension(completedFileName, ".complete");
+
+            var completedFilePath = Path.Combine(completeDirectoryPath, completedFileName);
+
+            File.Move(inProgressFilePath, completedFilePath);
+        }
+
+        private void ProcessTextFile(string inProgressFilePath)
+        {
+            Console.WriteLine($"Processing text file {inProgressFilePath}");
+            //Read in and process
         }
     }
 }
