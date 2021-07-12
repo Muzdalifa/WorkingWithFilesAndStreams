@@ -49,7 +49,19 @@ namespace DataProcessor
             //copy file even if file already exist overwrite it
             File.Copy(InputFilePath, backupFilePath, true);
 
+            //Move file to in progress dir
+            Directory.CreateDirectory(Path.Combine(rootDirectoryPath, InProgressDirectoryName)); //Create folder called "processing"
+            string inProgressFilePath =
+                Path.Combine(rootDirectoryPath, InProgressDirectoryName, inputFileName);
 
+            if (File.Exists(inProgressFilePath)) 
+            {
+                Console.WriteLine($"ERROR: a file with name {inProgressFilePath} is already being processed.");
+                return;
+            }
+
+            Console.WriteLine($"Moving {InputFilePath} to {inProgressFilePath}");
+            File.Move(InputFilePath, inProgressFilePath);
 
         }
     }
