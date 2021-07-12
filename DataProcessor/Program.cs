@@ -20,7 +20,13 @@ namespace DataProcessor
             if(command == "--file")
             {
                 var filePath = args[1];
-
+                //Check if Path is absolute (path that contains root directory and all over subdirectories where a file or folder is contained, ie start from  from the drive ex: C:, D: )
+                if (!Path.IsPathFullyQualified(filePath))
+                {
+                    Console.WriteLine($"ERROR: path '{filePath}' must be fully qualified.");
+                    Console.ReadLine();
+                    return;
+                }
 
 
                 Console.WriteLine($"Single file {filePath} selected");
