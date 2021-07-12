@@ -21,7 +21,10 @@ namespace DataProcessor
             {
                 var filePath = args[1];
 
+
+
                 Console.WriteLine($"Single file {filePath} selected");
+
                 ProcessSingleFile(filePath);
             }
             else if(command == "--dir")
